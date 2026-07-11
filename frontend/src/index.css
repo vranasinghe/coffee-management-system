@@ -1,0 +1,5 @@
+/* React specific styling overrides can go here */
+#root {
+  width: 100%;
+  height: 100%;
+}
