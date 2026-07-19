@@ -4,6 +4,7 @@ const path = require('path');
 const User = require('../models/userModel');
 const Menu = require('../models/menuModel');
 const Inventory = require('../models/inventoryModel');
+const Gallery = require('../models/galleryModel');
 
 dotenv.config({ path: path.join(__dirname, '../.env') });
 
@@ -74,6 +75,15 @@ const inventoryItems = [
     { name: 'Paper Cups (20 oz)', quantity: 400, unit: 'units', minStockLevel: 100, supplier: 'PackSafe Packaging' }
 ];
 
+const galleryItems = [
+    { title: 'Cozy Dining', url: 'images/gallery/1.jpg' },
+    { title: 'Premium Espresso', url: 'images/gallery/2.jpg' },
+    { title: 'Warm Brew', url: 'images/gallery/3.jpg' },
+    { title: 'Pastry & Coffee', url: 'images/gallery/4.jpg' },
+    { title: 'Rustic Interior', url: 'images/gallery/5.jpg' },
+    { title: 'Barista Specials', url: 'images/gallery/6.jpg' }
+];
+
 const seedDB = async () => {
     try {
         console.log('Connecting to database for seeding...');
@@ -86,6 +96,7 @@ const seedDB = async () => {
         await User.deleteMany();
         await Menu.deleteMany();
         await Inventory.deleteMany();
+        await Gallery.deleteMany();
 
         // Seed users
         console.log('Seeding default users...');
@@ -105,6 +116,11 @@ const seedDB = async () => {
         console.log('Seeding inventory items...');
         await Inventory.insertMany(inventoryItems);
         console.log('Inventory seeded.');
+
+        // Seed gallery
+        console.log('Seeding gallery items...');
+        await Gallery.insertMany(galleryItems);
+        console.log('Gallery seeded.');
 
         console.log('Seeding completed successfully!');
         process.exit(0);
