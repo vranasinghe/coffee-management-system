@@ -1,0 +1,6 @@
+# Tell GitHub Linguist to treat these static asset and library folders as vendor code,
+# so they are excluded from the main language statistics bar.
+frontend/public/css/**/* linguist-vendored
+frontend/public/js/**/* linguist-vendored
+frontend/public/fonts/**/* linguist-vendored
+frontend/public/vendor/**/* linguist-vendored
