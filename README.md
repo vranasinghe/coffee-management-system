@@ -110,39 +110,6 @@ coffee-management-system/
 
 ---
 
-## 📡 REST API Documentation
-
-| Endpoint | Method | Access | Description |
-| :--- | :--- | :--- | :--- |
-| **Authentication** | | | |
-| `/api/auth/register` | `POST` | Public | Register a new customer |
-| `/api/auth/login` | `POST` | Public | Authenticate user & get JWT token |
-| `/api/auth/profile` | `GET` | Private | Retrieve logged-in user profile |
-| **Menu Items** | | | |
-| `/api/menu` | `GET` | Public | Get all menu items (filterable by category) |
-| `/api/menu` | `POST` | Admin/Staff | Create a new menu item |
-| `/api/menu/:id` | `PUT` | Admin/Staff | Update an existing menu item |
-| `/api/menu/:id` | `DELETE`| Admin/Staff | Remove a menu item from database |
-| **Reservations & Orders** | | | |
-| `/api/orders` | `POST` | Public | Submit a new table booking |
-| `/api/orders` | `GET` | Admin/Staff | Retrieve all table bookings |
-| `/api/orders/my` | `GET` | Private | Get logged-in user's reservation history |
-| `/api/orders/:id` | `PUT` | Admin/Staff | Confirm, modify, or cancel a reservation |
-| **Inventory Control** | | | |
-| `/api/inventory` | `GET` | Admin/Staff | View all ingredients, packaging, and stock levels |
-| `/api/inventory` | `POST` | Admin/Staff | Add a new stock item |
-| `/api/inventory/:id` | `PUT` | Admin/Staff | Update quantities, suppliers, or thresholds |
-| **Gallery** | | | |
-| `/api/gallery` | `GET` | Public | Get all gallery images |
-| `/api/gallery` | `POST` | Admin/Staff | Add a new image card |
-| `/api/gallery/:id` | `DELETE`| Admin/Staff | Delete a gallery image |
-| **Feedback / Messages** | | | |
-| `/api/contact` | `POST` | Public | Send a feedback/contact form |
-| `/api/contact` | `GET` | Admin/Staff | Read client messages |
-| `/api/contact/:id/read` | `PUT` | Admin/Staff | Mark a message as read |
-
----
-
 ## 🔒 Default Login Credentials (After Seeding)
 
 You can use the following seeded accounts to verify authentication and authorization:
