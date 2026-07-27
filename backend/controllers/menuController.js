@@ -1,18 +1,22 @@
 const Menu = require('../models/menuModel');
 
-// @desc    Get all menu items (can filter by category)
+// Shared query builder reused by the HTTP handler below and the AI
+// assistant's search_menu tool, so the filtering logic lives in one place.
+const findMenuItems = async ({ category, query } = {}) => {
+    const filter = {};
+    if (category) filter.category = category;
+    if (query) filter.name = { $regex: query, $options: 'i' };
+    return Menu.find(filter);
+};
+exports.findMenuItems = findMenuItems;
+
+// @desc    Get all menu items (can filter by category and/or name query)
 // @route   GET /api/menu
 // @access  Public
 exports.getMenu = async (req, res, next) => {
     try {
-        const { category } = req.query;
-        let query = {};
-        
-        if (category) {
-            query.category = category;
-        }
-
-        const menuItems = await Menu.find(query);
+        const { category, query } = req.query;
+        const menuItems = await findMenuItems({ category, query });
         res.json({
             success: true,
             count: menuItems.length,

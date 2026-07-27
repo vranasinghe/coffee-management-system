@@ -1,5 +1,43 @@
 const Order = require('../models/orderModel');
 
+// Shared creation logic reused by the HTTP handler below and the AI
+// assistant's create_reservation / finalize_order tools, so order creation
+// only happens in one place.
+const createOrderRecord = async ({ name, email, phone, date, time, guests, message, items, type, userId }) => {
+    if (!name || !email || !phone || !date || !time || !guests) {
+        const error = new Error('Please provide all required fields (name, email, phone, date, time, guests)');
+        error.statusCode = 400;
+        throw error;
+    }
+
+    // Calculate total price if there are items
+    let totalPrice = 0;
+    if (items && items.length > 0) {
+        totalPrice = items.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+    }
+
+    const orderData = {
+        name,
+        email,
+        phone,
+        date,
+        time,
+        guests,
+        message,
+        items: items || [],
+        totalPrice,
+        type: type || 'reservation'
+    };
+
+    // Associate with user if logged in
+    if (userId) {
+        orderData.user = userId;
+    }
+
+    return Order.create(orderData);
+};
+exports.createOrderRecord = createOrderRecord;
+
 // @desc    Create new order / reservation
 // @route   POST /api/orders
 // @access  Public
@@ -7,18 +45,7 @@ exports.createOrder = async (req, res, next) => {
     try {
         const { name, email, phone, date, time, guests, message, items, type } = req.body;
 
-        if (!name || !email || !phone || !date || !time || !guests) {
-            res.status(400);
-            return next(new Error('Please provide all required fields (name, email, phone, date, time, guests)'));
-        }
-
-        // Calculate total price if there are items
-        let totalPrice = 0;
-        if (items && items.length > 0) {
-            totalPrice = items.reduce((acc, item) => acc + (item.price * item.quantity), 0);
-        }
-
-        const orderData = {
+        const order = await createOrderRecord({
             name,
             email,
             phone,
@@ -26,23 +53,19 @@ exports.createOrder = async (req, res, next) => {
             time,
             guests,
             message,
-            items: items || [],
-            totalPrice,
-            type: type || 'reservation'
-        };
-
-        // Associate with user if logged in
-        if (req.user) {
-            orderData.user = req.user._id;
-        }
-
-        const order = await Order.create(orderData);
+            items,
+            type,
+            userId: req.user ? req.user._id : undefined
+        });
 
         res.status(201).json({
             success: true,
             data: order
         });
     } catch (error) {
+        if (error.statusCode) {
+            res.status(error.statusCode);
+        }
         next(error);
     }
 };

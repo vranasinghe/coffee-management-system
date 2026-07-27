@@ -39,6 +39,7 @@ app.use('/api/orders', require('./routes/orderRoutes'));
 app.use('/api/inventory', require('./routes/inventoryRoutes'));
 app.use('/api/contact', require('./routes/contactRoutes'));
 app.use('/api/gallery', require('./routes/galleryRoutes'));
+app.use('/api/ai', require('./routes/aiRoutes'));
 
 app.use(notFound);
 app.use(errorHandler);

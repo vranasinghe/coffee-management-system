@@ -8,6 +8,7 @@ import Blog from './components/Blog';
 import BlogSingle from './components/BlogSingle';
 import Gallery from './components/Gallery';
 import Contact from './components/Contact';
+import AIAssistant from './components/AIAssistant';
 
 function App() {
   const [page, setPage] = useState('home');
@@ -38,6 +39,7 @@ function App() {
       <Header page={page} setPage={setPage} />
       {renderPage()}
       <Footer />
+      <AIAssistant />
     </div>
   );
 }
