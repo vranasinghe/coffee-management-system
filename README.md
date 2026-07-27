@@ -163,7 +163,3 @@ The AI assistant endpoint (`POST /api/ai/chat`) provides an interactive ordering
 * **`finalize_order`**: Submits active orders to the main order database.
 
 ---
-
-## 📜 License
-
-This project is open source and available under the [MIT License](LICENSE).
