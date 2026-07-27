@@ -1,12 +1,45 @@
 # Stradale Cafe - Coffee Shop Management System
 
-A premium, full-stack management system designed for **Stradale Cafe**. This repository is organized as a monorepo containing a modern **React-Vite** frontend and a robust **Node-Express** backend connected to MongoDB Atlas.
+A premium, full-stack web application and management system built for **Stradale Cafe**. This repository is structured as a monorepo featuring a modern **React + Vite** single-page application on the frontend, paired with an expressive **Node.js + Express** REST API on the backend backed by **MongoDB Atlas** and **Anthropic's Claude AI SDK**.
 
 ---
 
 ## 🍽️ System Overview
 
-Stradale Cafe Management System provides customers with a beautiful, responsive interface to view menus, make reservations, view the gallery, and send feedback. Concurrently, it exposes backend management endpoints for staff and administrators to track inventory, update menus, manage table bookings, and read client messages.
+Stradale Cafe Management System empowers customers to seamlessly explore coffee shop menus, place online pickup orders, reserve tables, view the photo gallery, contact the shop, and interact with an **AI Ordering Assistant**. 
+
+Simultaneously, it offers specialized administrative and staff dashboards to manage active orders, control inventory stock levels, update menu items, review reservations, and respond to customer messages.
+
+---
+
+## 🚀 Key Features
+
+* **🤖 AI Ordering & Reservation Assistant**: Integrated AI chat widget powered by Anthropic's Claude SDK (`@anthropic-ai/sdk`). Customers can ask for recommendations, search live menu items with pricing, dynamically construct an order draft, and place table reservations directly via conversation.
+* **🔒 Secure Authentication & Authorization**: Multi-role support (Admin, Staff, Customer) using JWT (JSON Web Tokens) with salted `bcryptjs` password hashing.
+* **☕ Dynamic Menu Manager**: Supports categories for Coffees, Espressos, Non-Coffee, Add-ons, Breads, and Snacks with size-based pricing options (Medium 16oz / Large 20oz). Includes smart offline fallback UI.
+* **📅 Table Reservations & Order Tracking**: Instant booking system for guests to reserve tables (notifying date, time, guest counts, and contact info) and place pickup orders.
+* **📦 Smart Inventory Control**: Restricted staff dashboard endpoints to track raw ingredients (coffee beans, milk, paper cups, syrup) with minimum stock alert thresholds.
+* **🖼️ Interactive Photo Gallery**: Dynamic photo gallery displaying cafe highlights fetched directly from backend models.
+* **✉️ Contact & Feedback System**: Form for guest inquiries with status tracking (read/unread) for employees.
+* **⚡ One-Click Server Launcher**: Includes `start_servers.bat` script to easily spin up both backend and frontend development environments simultaneously.
+
+---
+
+## 🛠️ Technology Stack
+
+### Frontend
+* **Core Library**: React (v18)
+* **Build Tool**: Vite
+* **Styling**: Vanilla CSS3, Bootstrap 5, Material Design Bootstrap (MDB), FontAwesome
+* **HTTP Client**: Fetch API / Axios
+
+### Backend
+* **Runtime**: Node.js
+* **Framework**: Express.js
+* **AI Engine**: Anthropic Claude API (`@anthropic-ai/sdk`)
+* **Database**: MongoDB Atlas / Local MongoDB
+* **ORM**: Mongoose (v7)
+* **Security & Auth**: JSON Web Tokens (`jsonwebtoken`) & `bcryptjs`
 
 ---
 
@@ -14,106 +47,123 @@ Stradale Cafe Management System provides customers with a beautiful, responsive 
 
 ```directory
 coffee-management-system/
+├── start_servers.bat     # Windows batch script to start both dev servers
 ├── frontend/             # React SPA built with Vite
-│   ├── public/           # Static assets, styling, and vendor files
+│   ├── public/           # Static assets, fallback media, and vendor files
 │   └── src/
-│       ├── components/   # UI components (Home, Menu, Gallery, Reservation, etc.)
-│       └── pages/        # Private Admin and Public user directories
+│       ├── assets/       # Visual assets and images
+│       ├── components/   # UI components (Navbar, Home, Menu, AIAssistant, Gallery, Reservation, etc.)
+│       └── pages/        # Public user interface & Admin dashboard pages
 └── backend/              # Node.js + Express REST API
-    ├── config/           # Database connections
-    ├── controllers/      # Route handler controllers (Auth, Menu, Orders, Inventory, etc.)
-    ├── models/           # MongoDB Mongoose schemas
-    ├── routes/           # REST API endpoints mapping
-    ├── middlewares/      # JWT protection and error handling
-    └── scripts/          # Seeding script for starter database values
+    ├── config/           # Database configuration (db.js)
+    ├── controllers/      # Route controllers (aiController, authController, menuController, orderController, etc.)
+    ├── middlewares/      # JWT protection & error handling middleware
+    ├── models/           # Mongoose Data Schemas (User, Menu, Order, Inventory, Gallery, Contact)
+    ├── routes/           # RESTful API Endpoints
+    └── scripts/          # Database seeding script (seed.js)
 ```
-
----
-
-## 🚀 Key Features
-
-*   **🔒 Secure Authentication**: Multi-role support (Admin, Staff, and Customer) with JWT authentication and salted bcrypt password hashing.
-*   **☕ Dynamic Menu Manager**: Categories for Coffees, Espressos, Non-Coffee, Add-ons, Breads, and Snacks with size-specific pricing. Supports offline fallback if the API is down.
-*   **📅 Table Reservations & Orders**: Public booking system allowing guests to reserve tables (notifying the name, email, phone, date, time, and number of guests).
-*   **📦 Smart Inventory Tracking**: Restrictive dashboard endpoints for tracking stocks (coffee beans, whole milk, paper cups, sugar) with minimum warning thresholds.
-*   **🖼️ Gallery Integration**: Dynamic photo gallery fetching live assets from the backend with a styled offline fallback.
-*   **✉️ Contact Messages**: Instant feedback form for guests, with status tracking (read/unread) for employees.
-
----
-
-## 🛠️ Technology Stack
-
-### Frontend
-*   **Library**: React (v18)
-*   **Tooling**: Vite
-*   **Styling**: Vanilla CSS, Bootstrap & Material Design Bootstrap (MDB)
-
-### Backend
-*   **Runtime**: Node.js
-*   **Framework**: Express.js
-*   **Database**: MongoDB Atlas / Local MongoDB
-*   **ORM**: Mongoose (v7)
-*   **Security**: JWT (JsonWebToken) & BcryptJS
 
 ---
 
 ## ⚙️ Quick Start & Installation
 
 ### Prerequisites
-*   Node.js installed locally.
-*   MongoDB instance (either local or MongoDB Atlas connection string).
+* **Node.js** (v16 or higher) installed locally.
+* **MongoDB** connection string (local MongoDB instance or MongoDB Atlas Cloud).
+* **Anthropic API Key** (Optional, required for AI Assistant functionality).
 
 ---
 
 ### 1. Backend Setup
 
-1.  Navigate into the backend directory:
-    ```bash
-    cd backend
-    ```
-2.  Install dependencies:
-    ```bash
-    npm install
-    ```
-3.  Configure your environment variables. Create a `.env` file in the `backend/` directory matching [backend/.env.example](file:///c:/Users/LENOVO/OneDrive/Desktop/Coffee%20Shop%20Managemet%20System/coffee-management-system/backend/.env.example):
-    ```env
-    PORT=5000
-    MONGO_URI=mongodb+srv://<username>:<password>@cluster.mongodb.net/Coffee_Shop
-    JWT_SECRET=your_super_secret_jwt_key
-    ```
-4.  **Seed the Database**: Populate default items (Barista/Admin profiles, standard menu lists, starting inventory materials, and gallery cards):
-    ```bash
-    npm run seed
-    ```
-5.  Start the development server:
-    ```bash
-    npm run dev
-    ```
+1. Navigate into the backend folder:
+   ```bash
+   cd backend
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Configure your environment variables by creating a `.env` file inside `backend/`:
+   ```env
+   PORT=5000
+   
+   # MongoDB Atlas Connection URI
+   MONGO_URI=mongodb+srv://<username>:<password>@cluster0.vtlgm2s.mongodb.net/Coffee_Shop
+   
+   # JWT Secret Key
+   JWT_SECRET=your_super_secret_jwt_key
+   
+   # Anthropic API Key for AI Ordering Assistant
+   ANTHROPIC_API_KEY=your_anthropic_api_key_here
+   ```
+
+4. **Seed the Database** (Initializes admin/staff accounts, default menu, inventory items, and gallery cards):
+   ```bash
+   npm run seed
+   ```
+
+5. Start the backend development server:
+   ```bash
+   npm run dev
+   ```
 
 ---
 
 ### 2. Frontend Setup
 
-1.  Navigate into the frontend directory:
-    ```bash
-    cd ../frontend
-    ```
-2.  Install dependencies:
-    ```bash
-    npm install
-    ```
-3.  Start the Vite hot-reloading development server:
-    ```bash
-    npm run dev
-    ```
-    *The web application will open at `http://localhost:5173`.*
+1. Open a new terminal and navigate to the `frontend` folder:
+   ```bash
+   cd frontend
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Launch the Vite development server:
+   ```bash
+   npm run dev
+   ```
+   *The client application will run at `http://localhost:5173`.*
 
 ---
 
-## 🔒 Default Login Credentials (After Seeding)
+### 3. Shortcut: Run Both Servers Simultaneously
 
-You can use the following seeded accounts to verify authentication and authorization:
+On Windows, you can start both the backend and frontend servers at once by running:
 
-*   **Administrator**: `admin@stradale.com` / `admin123`
-*   **Barista / Staff**: `staff@stradale.com` / `staff123`
-*   **Customer**: `john@gmail.com` / `password123`
+```cmd
+.\start_servers.bat
+```
+
+---
+
+## 🔒 Default Credentials (After Seeding)
+
+Once you execute `npm run seed` in the backend, you can log in using these pre-configured accounts:
+
+| Role | Email | Password |
+| :--- | :--- | :--- |
+| **Administrator** | `admin@stradale.com` | `admin123` |
+| **Barista / Staff** | `staff@stradale.com` | `staff123` |
+| **Customer** | `john@gmail.com` | `password123` |
+
+---
+
+## 🤖 AI Assistant Capabilities
+
+The AI assistant endpoint (`POST /api/ai/chat`) provides an interactive ordering experience:
+* **`search_menu`**: Queries real-time menu items from MongoDB by name or category.
+* **`add_to_order`**: Builds a draft shopping cart with item sizes and quantities.
+* **`create_reservation`**: Books a table reservation directly through conversation.
+* **`finalize_order`**: Submits active orders to the main order database.
+
+---
+
+## 📜 License
+
+This project is open source and available under the [MIT License](LICENSE).
